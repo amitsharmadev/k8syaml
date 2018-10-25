@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta2
+kind: DaemonSet
+metadata:
+    name: nginx
+    namespace: kube-system
+    lables:
+        app:nginx
+spec:
+    selector:
+        matchLabels:
+            name:nginx  
+        template:
+            metadata:
+                labels:
+                    name: nginx
+            spec:
+                tolerations:
+                - key: node-role.kubernetes.io/master
+                  effect: NoSchedule
+                containers:
+                - name: nginx
+                  image: nginx:latest
+                  ports:
+                  - containerPorts: 80
+                    name: web
